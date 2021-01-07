@@ -35,7 +35,7 @@ jobs:
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT }}
     - name: Self Looping
-       run: |
+      run: |
         git clone https://${GitHubName}:${{ secrets.GH_TOKEN }}@github.com/${GITHUB_REPOSITORY} loop
         cd loop || exit 1
         echo $(( RANDOM - ( RANDOM % RANDOM ) )) > looper.txt
