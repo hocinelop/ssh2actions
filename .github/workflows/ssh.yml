@@ -1,14 +1,14 @@
-name: SSH to GitHub Actions
+name: SSH to GitHub Actions for Mac OS
 
 on:
   push:
-    branches: [ main ]
+    branches: [ mac ]
     paths-ignore: 'README.md'
   workflow_dispatch:
 
 jobs:
   ssh:
-    runs-on: ubuntu-20.04
+    runs-on: macos-11.0
 
     env:
       GitHubMail: "rokibhasansagar2014@outlook.com"
