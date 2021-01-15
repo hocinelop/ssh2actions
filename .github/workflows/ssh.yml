@@ -1,4 +1,4 @@
-name: SSH to GitHub Actions for Mac OS
+name: MacOS SSH to GitHub Actions
 
 on:
   push:
