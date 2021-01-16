@@ -34,9 +34,9 @@ jobs:
         SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
     - name: Self Looping
       run: |
-        git clone https://${GitHubName}:${{ secrets.GH_TOKEN }}@github.com/${GITHUB_REPOSITORY} loop
+        git clone https://${GitHubName}:${{ secrets.GH_TOKEN }}@github.com/${GITHUB_REPOSITORY} -b mac loop
         cd loop || exit 1
         echo $(( RANDOM - ( RANDOM % RANDOM ) )) > looper.txt
         git add looper.txt
         git commit -m "Looping at $(date -u +%D-%T%P)"
-        git push -q https://${{ secrets.GH_TOKEN }}@github.com/${GITHUB_REPOSITORY} HEAD:main
+        git push -q https://${{ secrets.GH_TOKEN }}@github.com/${GITHUB_REPOSITORY} HEAD:mac
