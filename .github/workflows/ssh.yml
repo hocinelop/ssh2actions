@@ -21,7 +21,21 @@ jobs:
         git config --global user.name ${GitHubName}
         git config --global credential.helper store
         echo "https://${GitHubName}:${{ secrets.GH_TOKEN }}@github.com" > ~/.git-credentials
-    #- uses: rokibhasansagar/slimhub_actions@main
+    - uses: rokibhasansagar/slimhub_actions@main
+    - name: SSH Keepalive
+      run: |
+        mkdir -p ~/.ssh
+        cat << EOF > ~/.ssh/config
+        Host *
+            ServerAliveInterval 60
+            StrictHostKeyChecking no
+        Host github.com
+            User git
+            Port 22
+            Hostname github.com
+            TCPKeepAlive yes
+            IdentitiesOnly yes
+        EOF
     - name: SSH connection to Actions
       continue-on-error: true
       timeout-minutes: 340
@@ -32,6 +46,8 @@ jobs:
         NGROK_TOKEN: ${{ secrets.NGROK_TOKEN }}
         NGROK_REGION: us
         SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
+        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
     - name: Self Looping
       run: |
         git clone https://${GitHubName}:${{ secrets.GH_TOKEN }}@github.com/${GITHUB_REPOSITORY} loop
