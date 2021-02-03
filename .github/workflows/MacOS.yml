@@ -12,7 +12,7 @@ defaults:
 
 jobs:
   ssh:
-    runs-on: macos-11.0
+    runs-on: macos-latest
 
     env:
       GitHubMail: "rokibhasansagar2014@outlook.com"
