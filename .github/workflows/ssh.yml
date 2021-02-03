@@ -2,7 +2,7 @@ name: SSH to GitHub Actions
 
 on:
   push:
-    branches: [ main ]
+    branches: [ bg ]
     paths-ignore: 'README.md'
   workflow_dispatch:
 
@@ -21,7 +21,6 @@ jobs:
         git config --global user.name ${GitHubName}
         git config --global credential.helper store
         echo "https://${GitHubName}:${{ secrets.GH_TOKEN }}@github.com" > ~/.git-credentials
-    #- uses: rokibhasansagar/slimhub_actions@main
     - name: SSH Keepalive
       run: |
         mkdir -p ~/.ssh
@@ -36,23 +35,22 @@ jobs:
             TCPKeepAlive yes
             IdentitiesOnly yes
         EOF
-    - name: SSH connection to Actions
+    - name: Create A Background Task
       continue-on-error: true
-      timeout-minutes: 340
-      uses: P3TERX/ssh2actions@main
-      with:
-        mode: ngrok
+      #timeout-minutes: 340
       env:
         NGROK_TOKEN: ${{ secrets.NGROK_TOKEN }}
         NGROK_REGION: us
         SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-    - name: Self Looping
       run: |
-        git clone https://${GitHubName}:${{ secrets.GH_TOKEN }}@github.com/${GITHUB_REPOSITORY} loop
-        cd loop || exit 1
-        echo $(( RANDOM - ( RANDOM % RANDOM ) )) > looper.txt
-        git add looper.txt
-        git commit -m "Looping at $(date -u +%D-%T%P)"
-        git push -q https://${{ secrets.GH_TOKEN }}@github.com/${GITHUB_REPOSITORY} HEAD:main
+        curl -sL https://github.com/P3TERX/ssh2actions/raw/main/ngrok2actions.sh > set_ngrok.sh
+        chmod a+x set_ngrok.sh
+        ./set_ngrok.sh &
+    #- uses: rokibhasansagar/slimhub_actions@main
+    - name: Slim
+      run: |
+        curl -sL https://github.com/rokibhasansagar/slimhub_actions/raw/main/cleanup.sh > cleanup.sh
+        chmod a+x cleanup.sh
+        ./cleanup.sh &
