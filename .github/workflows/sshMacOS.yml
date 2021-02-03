@@ -6,9 +6,13 @@ on:
     paths-ignore: 'README.md'
   workflow_dispatch:
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   ssh:
-    runs-on: macos-latest
+    runs-on: macos-11.0
 
     env:
       GitHubMail: "rokibhasansagar2014@outlook.com"
@@ -37,11 +41,22 @@ jobs:
             TCPKeepAlive yes
             IdentitiesOnly yes
         EOF
-    - name: Configure UNIX-Like Volume
+    - name: Minor cleanups
       run: |
-        printf "Creating SPARSE FS\n"
-        sudo hdiutil create -type SPARSE -fs 'Case-sensitive Journaled HFS+' -size 220g ~/unix.dmg.sparseimage
-        sudo hdiutil attach ~/unix.dmg.sparseimage -mountpoint /Volumes/unix
+        brew uninstall -f --cask adoptopenjdk11 adoptopenjdk8 chromedriver firefox google-chrome julia microsoft-auto-update microsoft-edge session-manager-plugin
+        brew uninstall -f --formula aliyun-cli ant aspell aws-sam-cli azure-cli bazelisk carthage composer fontconfig freetds freetype gcc@8 gd geckodriver gh gradle helm hub jpeg libpq libtiff llvm maven mongodb-community mongodb-database-tools node@14 openjdk php pipx postgresql python@3.8 rustup-init selenium-server-standalone subversion tidy-html5 unixodbc webp
+    - name: Setup GNU Tools
+      run: |
+        git clone https://github.com/fabiomaia/linuxify.git
+        cd linuxify/
+        echo n | ./linuxify install
+        cd .. && rm -rf linuxify
+        echo ". ~/.linuxify" >> ~/.bashrc && . ~/.bashrc
+        echo ". ~/.linuxify" >> ~/.zshrc && . ~/.zshrc
+    - name: Test bash
+      run: |
+        sudo sed -i 's#^/bin/bash$#/usr/local/bin/bash#' /etc/shells
+        bash --version | grep bash
     - name: SSH connection to Actions
       continue-on-error: true
       timeout-minutes: 340
