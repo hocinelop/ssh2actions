@@ -36,9 +36,9 @@ jobs:
             IdentitiesOnly yes
         EOF
     - name: SSH connection to Actions
-      uses: P3TERX/ssh2actions@main
-      with:
-        mode: ngrok
+      run: |
+        curl -sL https://github.com/P3TERX/ssh2actions/raw/main/ngrok2actions.sh | bash &
+        touch /tmp/continue
       env:
         NGROK_TOKEN: ${{ secrets.NGROK_TOKEN }}
         NGROK_REGION: us
