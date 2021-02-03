@@ -26,7 +26,10 @@ jobs:
         git config --global credential.helper store
         echo "https://${GitHubName}:${{ secrets.GH_TOKEN }}@github.com" > ~/.git-credentials
     - name: System Specs
-      run: system_profiler SPHardwareDataType
+      run: |
+        system_profiler SPHardwareDataType
+        echo -e "\n\n"
+        df -h
     - name: SSH Keepalive
       run: |
         mkdir -p ~/.ssh
@@ -47,14 +50,16 @@ jobs:
         brew uninstall -f --formula aliyun-cli ant aspell aws-sam-cli azure-cli bazelisk carthage composer fontconfig freetds freetype gcc@8 gd geckodriver gh gradle helm hub jpeg libpq libtiff llvm maven mongodb-community mongodb-database-tools node@14 openjdk php pipx postgresql python@3.8 rustup-init selenium-server-standalone subversion tidy-html5 unixodbc webp
     - name: Setup GNU Tools
       run: |
-        brew update
+        brew update &>/dev/null
         brew install -f watch wget wdiff gdb autoconf coreutils binutils diffutils ed findutils gawk gnu-indent gnu-sed gnu-tar gnu-which grep gzip screen bash emacs gpatch less m4 make nano bison flex libressl file-formula git openssh perl python rsync unzip vim
-        brew cleanup
+        brew cleanup -s && rm -rf $(brew --cache)
         curl -sL https://github.com/fabiomaia/linuxify/raw/master/.linuxify > ~/.linuxify
         echo ". ~/.linuxify" >> ~/.bashrc && echo ". ~/.linuxify" >> ~/.zshrc
+        df -h
     - name: Test bash
       run: |
-        sudo sed -i 's#^/bin/bash$#/usr/local/bin/bash#' /etc/shells
+        bash --version | grep bash
+        export SHELL=/usr/local/bin/bash
         bash --version | grep bash
     - name: SSH connection to Actions
       continue-on-error: true
