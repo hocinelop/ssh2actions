@@ -43,16 +43,17 @@ jobs:
         EOF
     - name: Minor cleanups
       run: |
-        brew uninstall -f --cask adoptopenjdk11 adoptopenjdk8 chromedriver firefox google-chrome julia microsoft-auto-update microsoft-edge session-manager-plugin
+        brew uninstall -f --cask adoptopenjdk12 adoptopenjdk11 adoptopenjdk8 chromedriver firefox google-chrome julia microsoft-auto-update microsoft-edge session-manager-plugin
         brew uninstall -f --formula aliyun-cli ant aspell aws-sam-cli azure-cli bazelisk carthage composer fontconfig freetds freetype gcc@8 gd geckodriver gh gradle helm hub jpeg libpq libtiff llvm maven mongodb-community mongodb-database-tools node@14 openjdk php pipx postgresql python@3.8 rustup-init selenium-server-standalone subversion tidy-html5 unixodbc webp
     - name: Setup GNU Tools
       run: |
-        git clone https://github.com/fabiomaia/linuxify.git
-        cd linuxify/
-        echo n | ./linuxify install
-        cd .. && rm -rf linuxify
+        set -v
+        brew update
+        brew install -f watch wget wdiff gdb autoconf coreutils binutils diffutils ed findutils gawk gnu-indent gnu-sed gnu-tar gnu-which grep gzip screen bash emacs gpatch less m4 make nano bison flex libressl file-formula git openssh perl python rsync unzip vim
+        curl -sL https://github.com/fabiomaia/linuxify/raw/master/.linuxify > ~/.linuxify
         echo ". ~/.linuxify" >> ~/.bashrc && . ~/.bashrc
         echo ". ~/.linuxify" >> ~/.zshrc && . ~/.zshrc
+        set +v
     - name: Test bash
       run: |
         sudo sed -i 's#^/bin/bash$#/usr/local/bin/bash#' /etc/shells
