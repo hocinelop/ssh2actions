@@ -35,22 +35,19 @@ jobs:
             TCPKeepAlive yes
             IdentitiesOnly yes
         EOF
-    - name: Create A Background Task
-      continue-on-error: true
-      #timeout-minutes: 340
+    - name: SSH connection to Actions
+      uses: P3TERX/ssh2actions@main
+      with:
+        mode: ngrok
       env:
         NGROK_TOKEN: ${{ secrets.NGROK_TOKEN }}
         NGROK_REGION: us
         SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+    - uses: rokibhasansagar/slimhub_actions@main
+    - name: Start
+      continue-on-error: true
+      timeout-minutes: 340
       run: |
-        curl -sL https://github.com/P3TERX/ssh2actions/raw/main/ngrok2actions.sh > set_ngrok.sh
-        chmod a+x set_ngrok.sh
-        ./set_ngrok.sh &
-    #- uses: rokibhasansagar/slimhub_actions@main
-    - name: Slim
-      run: |
-        curl -sL https://github.com/rokibhasansagar/slimhub_actions/raw/main/cleanup.sh > cleanup.sh
-        chmod a+x cleanup.sh
-        ./cleanup.sh
+        printf "You may Start work now.\n"
