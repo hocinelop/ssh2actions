@@ -53,4 +53,4 @@ jobs:
       run: |
         curl -sL https://github.com/rokibhasansagar/slimhub_actions/raw/main/cleanup.sh > cleanup.sh
         chmod a+x cleanup.sh
-        ./cleanup.sh &
+        ./cleanup.sh
