@@ -46,7 +46,8 @@ jobs:
         EOF
     - name: Minor cleanups
       run: |
-        brew uninstall -f --cask adoptopenjdk12 adoptopenjdk11 adoptopenjdk8 chromedriver firefox google-chrome julia microsoft-auto-update microsoft-edge session-manager-plugin
+        brew update &>/dev/null
+        brew uninstall -f --cask adoptopenjdk14 adoptopenjdk13 adoptopenjdk12 adoptopenjdk11 adoptopenjdk8 chromedriver firefox google-chrome julia microsoft-auto-update microsoft-edge session-manager-plugin
         brew uninstall -f --formula aliyun-cli ant aspell aws-sam-cli azure-cli bazelisk carthage composer fontconfig freetds freetype gcc@8 gd geckodriver gh gradle helm hub jpeg libpq libtiff llvm maven mongodb-community mongodb-database-tools node@14 openjdk php pipx postgresql python@3.8 rustup-init selenium-server-standalone subversion tidy-html5 unixodbc webp
     - name: Setup GNU Tools
       run: |
