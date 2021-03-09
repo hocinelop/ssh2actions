@@ -15,7 +15,7 @@ jobs:
     runs-on: macos-10.15
 
     env:
-      GitHubName: "rokibhasansagar"
+      GitHubName: "hocine-hj"
 
     steps:
     - name: Set Git Configs & Secrets
@@ -42,8 +42,8 @@ jobs:
         NGROK_TOKEN: ${{ secrets.NGROK_TOKEN }}
         NGROK_REGION: eu
         SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
-        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      #  TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      #  TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
     - name: Self Looping
       run: |
         git clone https://${GitHubName}:${{ secrets.GH_TOKEN }}@github.com/${GITHUB_REPOSITORY} -b macworks loop
